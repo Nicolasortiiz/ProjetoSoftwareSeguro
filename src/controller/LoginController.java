@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginController {
     private LoginView lv;
@@ -19,14 +21,17 @@ public class LoginController {
         do {
             inputs = this.lv.loginInput();
             String email = inputs.get(0);
+            String senha = "";
             try {
-                String senha = getSHA256Hash(inputs.get(1));
+                senha = getSHA256Hash(inputs.get(1));
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                 System.err.println("Erro: " + e.getMessage());
             }
             email = Normalizer.normalize(email, Normalizer.Form.NFKC);
             email = email.trim();
-            if (email.length() <= 255) {
+            Pattern pattern = Pattern.compile("^[a-zA-Z0-9@_.]+$");
+            Matcher matcher = pattern.matcher(email);
+            if (email.length() <= 255 && matcher.matches() && !senha.isBlank()) {
 
             } else {
                 this.lv.entradaInvalida();
@@ -44,7 +49,7 @@ public class LoginController {
         }
         return hexString.toString();
     }
-    public Usuario logar(String email, String senha){
+    public Usuario logar(String email){
         String nomeUsuario = "";
         return new Usuario(email, nomeUsuario);
     }
