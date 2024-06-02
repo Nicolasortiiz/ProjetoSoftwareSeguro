@@ -1,5 +1,6 @@
 package controller;
 
+import dao.UsuarioDAO;
 import model.Usuario;
 import view.LoginView;
 
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 public class LoginController {
     private LoginView lv;
     private Usuario usuario;
+    private UsuarioDAO uDAO;
     public LoginController() {
         this.lv = new LoginView();
         // adicionar cognito
@@ -32,7 +34,8 @@ public class LoginController {
             Pattern pattern = Pattern.compile("^[a-zA-Z0-9@_.]+$");
             Matcher matcher = pattern.matcher(email);
             if (email.length() <= 255 && matcher.matches() && !senha.isBlank()) {
-
+                uDAO = new UsuarioDAO();
+                uDAO.retornaUsuario(usuario);
             } else {
                 this.lv.entradaInvalida();
             }
