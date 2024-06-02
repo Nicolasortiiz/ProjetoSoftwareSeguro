@@ -1,53 +1,78 @@
 package dao;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class Conexao {
     private static Conexao conex;
     private final String con_banco;
-    private final String usuario_mysql;
-    private final String senha_mysql;
     private Connection conn;
-    private Conexao() throws IOException {
+    private Conexao() {
         conex = null;
-        usuario_mysql = "root";
-        senha_mysql = "root";
-        char[] usuario = new char[100];
-        char[] senha = new char[100];
-        int offset = 0;
-        int charsRead = 0;
+        con_banco = "jdbc:mysql://127.0.0.1:3306/projetobd?useSSL=false";
+        char[] usuario = new char[4];
+        char[] senha = new char[4];
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream("serveripaddress.txt")));
-            while ((charsRead = br.read(usuario, offset, usuario.length - offset))
-                    != -1) {
-                offset += charsRead;
-                if (offset >= usuario.length) {
-                    break;
-                }
-            }
-            con_banco = "jdbc:mysql://127.0.0.1:3306/projetobd?useSSL=false";
-            try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = (Connection) DriverManager.getConnection(con_banco,usuario_mysql,senha_mysql);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            try {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt")));
+                int numLinha = 0;
+                String line;
+                StringBuilder content = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    content.append(line);
 
-        } finally {
-            Arrays.fill(usuario,  (char) 0);
-            br.close();
+                    for (int i = 0; i < line.length(); i++) {
+                        char letra = line.charAt(i);
+                        if (numLinha == 2 && i == 26) {
+                            usuario[0] = letra;
+                        } else if (numLinha == 5 && i == 21) {
+                            usuario[1] = letra;
+                        } else if (numLinha == 6 && i == 9) {
+                            usuario[2] = letra;
+                        } else if (numLinha == 1 && i == 23) {
+                            usuario[3] = letra;
+                        }
+                        if (numLinha == 2 && i == 26) {
+                            senha[0] = letra;
+                        } else if (numLinha == 5 && i == 21) {
+                            senha[1] = letra;
+                        } else if (numLinha == 6 && i == 9) {
+                            senha[2] = letra;
+                        } else if (numLinha == 1 && i == 23) {
+                            senha[3] = letra;
+                        }
+                    }
+                    content.append(System.lineSeparator());
+                    numLinha++;
+
+                }
+
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    conn = (Connection) DriverManager.getConnection(con_banco, new String(usuario), new String(senha));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                Arrays.fill(usuario, (char) 0);
+                Arrays.fill(senha, (char) 0);
+                br.close();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
         }
 
-
     }
-    public static Conexao getInstance() throws IOException{
+    public static Conexao getInstance(){
         if(conex == null){
             conex = new Conexao();
         }
