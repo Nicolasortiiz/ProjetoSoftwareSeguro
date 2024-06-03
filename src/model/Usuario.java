@@ -3,7 +3,8 @@ package model;
 public class Usuario {
     private String email;
     private String nomeUsuario;
-    public Usuario(String email, String nomeUsuario){
+
+    public Usuario(String email, String nomeUsuario) {
         this.email = email;
         this.nomeUsuario = nomeUsuario;
     }
