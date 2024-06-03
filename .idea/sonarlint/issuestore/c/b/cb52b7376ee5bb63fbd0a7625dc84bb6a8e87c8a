@@ -1,0 +1,10 @@
+
+ˆ	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(·š†‡J$ca91f129-9d1f-44e9-98a2-066fdbb5406b
+
+java:S1223"LRename this method to prevent any misunderstanding or make it a constructor.(¡şÏÖøÿÿÿÿJ$13e91fb9-1a32-4a71-afd7-a2924f615d76
+„
+java:S1854"BRemove this useless assignment to local variable "menuController".(½Ííu8øş1J$82f0cc78-0d6a-4a98-8d82-f07bbd662d45
+k
+java:S1197"*Move the array designators [] to the type.(¡şÏÖøÿÿÿÿJ$96301f15-2e48-43a5-890f-c62fa4bbba74
+u
+java:S1481"3Remove this unused "menuController" local variable.(½Ííu8£øş1J$03f4b876-ea05-4a8e-aa60-7ba876528ee8
