@@ -15,13 +15,13 @@ public class UsuarioDAO {
     public UsuarioDAO(){
         conexao = conexao.getInstance();
     }
-    public Usuario retornaUsuario(Usuario usuario) {
+    public Usuario retornaUsuario(String emailLogin) {
         String email = null;
         String nomeUsuario = null;
         try {
             query = "SELECT email, nome_usuario FROM usuario WHERE email = ?";
             ps = conexao.getConexao().prepareStatement(query);
-            ps.setString(1, usuario.getEmail());
+            ps.setString(1, emailLogin);
             rs = ps.executeQuery();
             if (rs.next()) {
                 email = rs.getString("email");
