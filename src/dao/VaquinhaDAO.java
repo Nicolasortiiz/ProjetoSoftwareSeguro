@@ -48,10 +48,10 @@ public class VaquinhaDAO {
             ps = conexao.getConexao().prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
+                vaquinha.setIdUsuario(rs.getInt("usuario_id"));
                 vaquinha.setIdVaquinha(rs.getInt("id"));
                 vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
                 vaquinha.setData(rs.getString("data_criacao"));
-                vaquinha.setNomeUsuario(this.retornaUsuarioID(usuario, rs.getInt("usuario_id")).getNomeUsuario());
                 vaquinhas.add(vaquinha);
             }
             rs.close();
@@ -71,11 +71,11 @@ public class VaquinhaDAO {
             ps.setInt(1, idVaquinha);
             rs = ps.executeQuery();
             if (rs.next()) {
+                vaquinha.setIdUsuario(rs.getInt("usuario_id"));
                 vaquinha.setIdVaquinha(rs.getInt("id"));
                 vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
                 vaquinha.setData(rs.getString("data_criacao"));
                 vaquinha.setDescricao(rs.getString("descricao"));
-                vaquinha.setNomeUsuario(this.retornaUsuarioID(usuario, rs.getInt("usuario_id")).getNomeUsuario());
                 try {
                     vaquinha.setValorMeta(Float.parseFloat(rs.getString("valor_meta")));
                     vaquinha.setValorArrecadado(Float.parseFloat(rs.getString("valor_arrecadado")));
@@ -91,23 +91,21 @@ public class VaquinhaDAO {
         }
         return vaquinha;
     }
-    public Usuario retornaUsuarioID(Usuario usuario, int id){
-
+    public String retornaNomeUsuario(int id){
+        String nome = null;
         try {
-            query = "SELECT email, nome_usuario FROM usuario WHERE id = ?";
+            query = "SELECT nome_usuario FROM usuario WHERE id = ?";
             ps = conexao.getConexao().prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                usuario.setNomeUsuario(rs.getString("nome_usuario"));
-                usuario.setEmail(rs.getString("email"));
-
+                nome = rs.getString("nome_usuario");
             }
             rs.close();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return usuario;
+        return nome;
     }
 }

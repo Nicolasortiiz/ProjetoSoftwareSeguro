@@ -2,12 +2,12 @@ package model;
 
 public class Vaquinha {
     private int idVaquinha;
+    private int idUsuario;
     private String nomeVaquinha;
     private String descricao;
     private float valorMeta;
     private float valorArrecadado;
     private String data;
-    private String nomeUsuario;
 
     public Vaquinha(String nomeVaquinha, String descricao, float valorMeta){
         this.nomeVaquinha = nomeVaquinha;
@@ -35,6 +35,13 @@ public class Vaquinha {
         this.idVaquinha = idVaquinha;
     }
 
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -63,11 +70,4 @@ public class Vaquinha {
         this.data = data;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
 }

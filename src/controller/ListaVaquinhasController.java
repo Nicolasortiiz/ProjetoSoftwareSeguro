@@ -14,13 +14,14 @@ public class ListaVaquinhasController {
     private ListaVaquinhasView lvv;
     private VaquinhaDAO vDAO;
     private int opcao;
+
     public ListaVaquinhasController(Usuario usuario){
         this.lvv = new ListaVaquinhasView();
         this.vDAO = new VaquinhaDAO();
         ArrayList<Vaquinha> vaquinhas = vDAO.listarVaquinhas();
         for (Vaquinha vaquinha : vaquinhas) {
             this.lvv.listar(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(),
-                    vaquinha.getNomeUsuario(), vaquinha.getData());
+                    this.vDAO.retornaNomeUsuario(vaquinha.getIdUsuario()), vaquinha.getData());
         }
         while(this.opcao != 0) {
             this.opcao = this.lvv.acessarVaquinha();

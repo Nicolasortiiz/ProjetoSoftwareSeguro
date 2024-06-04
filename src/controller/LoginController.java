@@ -12,6 +12,7 @@ public class LoginController {
     private LoginView lv;
     private Usuario usuario;
     private UsuarioDAO uDAO;
+
     public LoginController() {
         this.lv = new LoginView();
         String email;

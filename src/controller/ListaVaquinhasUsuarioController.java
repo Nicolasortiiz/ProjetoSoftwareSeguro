@@ -12,6 +12,7 @@ public class ListaVaquinhasUsuarioController {
     private ListaVaquinhasUsuarioView lvuv;
     private VaquinhaDAO vDAO;
     private int opcao;
+
     public ListaVaquinhasUsuarioController(Usuario usuario){
         this.lvuv = new ListaVaquinhasUsuarioView();
         this.vDAO = new VaquinhaDAO();
