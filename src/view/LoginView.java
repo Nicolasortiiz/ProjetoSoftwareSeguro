@@ -11,8 +11,9 @@ public class LoginView {
 
     public ArrayList<String> loginInput(){
         this.sc = new Scanner(System.in);
-        ArrayList<String> lista = new ArrayList<String>();
-        System.out.println("\nDigite o email: ");
+        ArrayList<String> lista = new ArrayList<>();
+        System.out.println("\nLogin (deixe ambos os campos vazios para voltar)");
+        System.out.println("Digite o email: ");
         lista.add(sc.nextLine());
 
         System.out.println("Digite a senha: ");

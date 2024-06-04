@@ -16,16 +16,39 @@ public class VaquinhaDAO {
     public VaquinhaDAO(){
         conexao = conexao.getInstance();
     }
+    public ArrayList<Vaquinha> listarVaquinhasUsuario(Usuario usuario) {
+        ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
+        Vaquinha vaquinha = new Vaquinha(null,null,0);
+
+        try {
+            query = "SELECT id,nome_vaquinha,data_criacao FROM vaquinha WHERE usuario_id = (SELECT id FROM usuario WHERE email = ?)";
+            ps = conexao.getConexao().prepareStatement(query);
+            ps.setString(1, usuario.getEmail());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                vaquinha.setIdVaquinha(rs.getInt("id"));
+                vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
+                vaquinha.setData(rs.getString("data_criacao"));
+                vaquinhas.add(vaquinha);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vaquinhas;
+    }
     public ArrayList<Vaquinha> listarVaquinhas() {
         ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
         Vaquinha vaquinha = new Vaquinha(null,null,0);
         Usuario usuario = new Usuario(null,null);
 
         try {
-            query = "SELECT nome_vaquinha,data_criacao,usuario_id FROM vaquinha";
+            query = "SELECT id,nome_vaquinha,data_criacao,usuario_id FROM vaquinha";
             ps = conexao.getConexao().prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
+                vaquinha.setIdVaquinha(rs.getInt("id"));
                 vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
                 vaquinha.setData(rs.getString("data_criacao"));
                 vaquinha.setNomeUsuario(this.retornaUsuarioID(usuario, rs.getInt("usuario_id")).getNomeUsuario());
@@ -38,16 +61,17 @@ public class VaquinhaDAO {
         }
         return vaquinhas;
     }
-    public ArrayList<Vaquinha> listarDetalhesVaquinhas() {
-        ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
+    public Vaquinha listarDetalhesVaquinhas(int idVaquinha) {
         Vaquinha vaquinha = new Vaquinha(null,null,0);
         Usuario usuario = new Usuario(null,null);
 
         try {
-            query = "SELECT nome_vaquinha,descricao,valor_meta,valor_arrecadado,data_criacao,usuario_id FROM vaquinha";
+            query = "SELECT id,nome_vaquinha,descricao,valor_meta,valor_arrecadado,data_criacao,usuario_id FROM vaquinha WHERE vaquinha.id = ?";
             ps = conexao.getConexao().prepareStatement(query);
+            ps.setInt(1, idVaquinha);
             rs = ps.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
+                vaquinha.setIdVaquinha(rs.getInt("id"));
                 vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
                 vaquinha.setData(rs.getString("data_criacao"));
                 vaquinha.setDescricao(rs.getString("descricao"));
@@ -59,14 +83,13 @@ public class VaquinhaDAO {
                     e.printStackTrace();
                 }
 
-                vaquinhas.add(vaquinha);
             }
             rs.close();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return vaquinhas;
+        return vaquinha;
     }
     public Usuario retornaUsuarioID(Usuario usuario, int id){
 

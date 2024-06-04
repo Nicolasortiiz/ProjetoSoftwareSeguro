@@ -18,19 +18,21 @@ public class ListaVaquinhasController {
         this.lvv = new ListaVaquinhasView();
         this.vDAO = new VaquinhaDAO();
         ArrayList<Vaquinha> vaquinhas = vDAO.listarVaquinhas();
-        for(int i = 0;i < vaquinhas.size();i++){
-            this.lvv.listar((i+1),vaquinhas.get(i).getNomeVaquinha(),vaquinhas.get(i).getNomeUsuario(),
-                    vaquinhas.get(i).getData());
+        for (Vaquinha vaquinha : vaquinhas) {
+            this.lvv.listar(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(),
+                    vaquinha.getNomeUsuario(), vaquinha.getData());
         }
         while(this.opcao != 0) {
             this.opcao = this.lvv.acessarVaquinha();
-            if((this.opcao-1) <= vaquinhas.size()) {
-                vaquinhas.clear();
-                this.dvc = new DetalhesVaquinhaController((this.opcao - 1));
-            }else{
-                vaquinhas.clear();
-                this.lvv.opcaoInvalida();
+            for(int i = 0; i < vaquinhas.size();i++){
+                if((this.opcao-1) == vaquinhas.get(i).getIdVaquinha()) {
+                    vaquinhas.clear();
+                    this.dvc = new DetalhesVaquinhaController(usuario,(this.opcao - 1));
+                }
             }
+            this.lvv.opcaoInvalida();
+
         }
+        vaquinhas.clear();
     }
 }

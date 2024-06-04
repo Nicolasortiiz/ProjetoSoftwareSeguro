@@ -19,8 +19,6 @@ public class CadastroView {
 
         return lista;
     }
-    public void entradaInvalida(){
-        System.out.println("Login incorreto!");
-    }
+
 
 }

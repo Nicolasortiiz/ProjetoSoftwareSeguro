@@ -1,6 +1,7 @@
 package model;
 
 public class Vaquinha {
+    private int idVaquinha;
     private String nomeVaquinha;
     private String descricao;
     private float valorMeta;
@@ -24,6 +25,14 @@ public class Vaquinha {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public int getIdVaquinha() {
+        return idVaquinha;
+    }
+
+    public void setIdVaquinha(int idVaquinha) {
+        this.idVaquinha = idVaquinha;
     }
 
     public void setDescricao(String descricao) {

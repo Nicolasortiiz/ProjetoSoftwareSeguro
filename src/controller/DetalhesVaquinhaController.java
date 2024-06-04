@@ -1,7 +1,10 @@
 package controller;
 
-public class DetalhesVaquinhaController {
-    public DetalhesVaquinhaController(int opcao){
+import model.Usuario;
+import view.DetalhesVaquinhaView;
 
+public class DetalhesVaquinhaController {
+
+    public DetalhesVaquinhaController(Usuario usuario, int opcao){
     }
 }
