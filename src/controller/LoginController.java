@@ -14,7 +14,7 @@ public class LoginController {
     private UsuarioDAO uDAO;
     public LoginController() {
         this.lv = new LoginView();
-        // adicionar cognito
+
         ArrayList<String> inputs;
         do {
             inputs = this.lv.loginInput();
