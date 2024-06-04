@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ public class Conexao {
         BufferedReader br = null;
         try {
             try {
-                br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt")));
+                br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt"), Charset.forName("UTF8")));
                 int numLinha = 0;
                 String line;
                 StringBuilder content = new StringBuilder();

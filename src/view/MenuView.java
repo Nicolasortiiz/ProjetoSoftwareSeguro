@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class MenuView {
     private Scanner sc;
+
     public MenuView(){
         this.sc = new Scanner (System.in);
     }
@@ -16,6 +17,7 @@ public class MenuView {
         System.out.println("Opção: ");
         return sc.nextInt();
     }
+
     public int menuLogado(){
         this.sc = new Scanner(System.in);
         System.out.println("(1) Lista de vaquinhas disponíveis");
@@ -26,6 +28,7 @@ public class MenuView {
         System.out.println("Opção: ");
         return sc.nextInt();
     }
+
     public void opcaoInvalida(){
         System.out.println("Opção inválida");
     }

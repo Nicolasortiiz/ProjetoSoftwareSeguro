@@ -12,26 +12,28 @@ public class LoginController {
     private LoginView lv;
     private Usuario usuario;
     private UsuarioDAO uDAO;
+
     public LoginController() {
         this.lv = new LoginView();
-        // adicionar cognito
+        String email;
+        String senha;
         ArrayList<String> inputs;
         do {
             inputs = this.lv.loginInput();
-            String email = inputs.get(0);
-            String senha = inputs.get(1);
+            email = inputs.get(0);
+            senha = inputs.get(1);
 
             email = Normalizer.normalize(email, Normalizer.Form.NFKC);
             email = email.trim();
             Pattern pattern = Pattern.compile("^[a-zA-Z0-9@_.]+$");
             Matcher matcher = pattern.matcher(email);
-            if (email.length() <= 255 && matcher.matches()) {
+            if (email.length() <= 255 && matcher.matches() && !senha.isBlank()) {
                 this.uDAO = new UsuarioDAO();
                 this.usuario = uDAO.retornaUsuario(email);
             } else {
                 this.lv.entradaInvalida();
             }
-        } while (inputs.get(0).isEmpty() || inputs.get(1).isEmpty());
+        } while (!email.isBlank() || !senha.isBlank());
     }
     public Usuario logar(){
         return this.usuario;

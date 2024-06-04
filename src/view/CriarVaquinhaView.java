@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 public class CriarVaquinhaView {
     private Scanner sc;
+
     public CriarVaquinhaView(){
         this.sc = new Scanner (System.in);
     }
+
     public Vaquinha addVaquinha(){
         this.sc = new Scanner(System.in);
         System.out.println("\nDigite o nome da vaquinha: ");

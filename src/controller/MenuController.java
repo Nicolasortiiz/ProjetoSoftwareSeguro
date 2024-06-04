@@ -12,6 +12,7 @@ public class MenuController {
     private CadastroController cc;
     private int opcao;
     private Usuario usuario;
+
     public MenuController(){
         mv = new MenuView();
         this.usuario = null;
