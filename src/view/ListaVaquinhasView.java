@@ -12,9 +12,11 @@ public class ListaVaquinhasView {
     }
     public int acessarVaquinha(){
         this.sc = new Scanner(System.in);
-        System.out.println("ID da vaquinha: ");
+        System.out.println("\nID da vaquinha (0 para sair): ");
         return sc.nextInt();
     }
-
+    public void opcaoInvalida(){
+        System.out.println("Opção inválida");
+    }
 
 }

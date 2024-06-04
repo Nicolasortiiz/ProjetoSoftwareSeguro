@@ -22,6 +22,28 @@ public class VaquinhaDAO {
         Usuario usuario = new Usuario(null,null);
 
         try {
+            query = "SELECT nome_vaquinha,data_criacao,usuario_id FROM vaquinha";
+            ps = conexao.getConexao().prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
+                vaquinha.setData(rs.getString("data_criacao"));
+                vaquinha.setNomeUsuario(this.retornaUsuarioID(usuario, rs.getInt("usuario_id")).getNomeUsuario());
+                vaquinhas.add(vaquinha);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vaquinhas;
+    }
+    public ArrayList<Vaquinha> listarDetalhesVaquinhas() {
+        ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
+        Vaquinha vaquinha = new Vaquinha(null,null,0);
+        Usuario usuario = new Usuario(null,null);
+
+        try {
             query = "SELECT nome_vaquinha,descricao,valor_meta,valor_arrecadado,data_criacao,usuario_id FROM vaquinha";
             ps = conexao.getConexao().prepareStatement(query);
             rs = ps.executeQuery();
