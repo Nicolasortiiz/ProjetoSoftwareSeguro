@@ -35,4 +35,33 @@ public class UsuarioDAO {
         return new Usuario(email, nomeUsuario);
     }
 
+    public void criarUsuario(Usuario usuario){
+        try {
+            query = "INSERT INTO usuario (email,nome_usuario) VALUES (?, ?)";
+            ps = conexao.getConexao().prepareStatement(query);
+            ps.setString(1, usuario.getEmail());
+            ps.setString(2, usuario.getNomeUsuario());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public String retornaNomeUsuario(int id){
+        String nome = null;
+        try {
+            query = "SELECT nome_usuario FROM usuario WHERE id = ?";
+            ps = conexao.getConexao().prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                nome = rs.getString("nome_usuario");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nome;
+    }
 }

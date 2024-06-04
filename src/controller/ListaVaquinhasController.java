@@ -1,5 +1,6 @@
 package controller;
 
+import dao.UsuarioDAO;
 import dao.VaquinhaDAO;
 import model.Usuario;
 import model.Vaquinha;
@@ -13,6 +14,7 @@ public class ListaVaquinhasController {
     private DetalhesVaquinhaController dvc;
     private ListaVaquinhasView lvv;
     private VaquinhaDAO vDAO;
+    private UsuarioDAO uDAO;
     private int opcao;
 
     public ListaVaquinhasController(Usuario usuario){
@@ -21,7 +23,7 @@ public class ListaVaquinhasController {
         ArrayList<Vaquinha> vaquinhas = vDAO.listarVaquinhas();
         for (Vaquinha vaquinha : vaquinhas) {
             this.lvv.listar(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(),
-                    this.vDAO.retornaNomeUsuario(vaquinha.getIdUsuario()), vaquinha.getData());
+                    this.uDAO.retornaNomeUsuario(vaquinha.getIdUsuario()), vaquinha.getData());
         }
         while(this.opcao != 0) {
             this.opcao = this.lvv.acessarVaquinha();

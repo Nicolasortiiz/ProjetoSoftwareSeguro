@@ -91,21 +91,5 @@ public class VaquinhaDAO {
         }
         return vaquinha;
     }
-    public String retornaNomeUsuario(int id){
-        String nome = null;
-        try {
-            query = "SELECT nome_usuario FROM usuario WHERE id = ?";
-            ps = conexao.getConexao().prepareStatement(query);
-            ps.setInt(1, id);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                nome = rs.getString("nome_usuario");
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return nome;
-    }
+
 }
