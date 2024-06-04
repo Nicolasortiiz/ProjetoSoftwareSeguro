@@ -21,25 +21,16 @@ public class CadastroController {
         do {
             inputs = this.cv.cadastroInput();
             String email = inputs.get(0);
-            String senha = "";
-            try {
-                senha = getSHA256Hash(inputs.get(1));
-            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                System.err.println("Erro: " + e.getMessage());
+            String senha = inputs.get(1);
+            email = Normalizer.normalize(email, Normalizer.Form.NFKC);
+            email = email.trim();
+            Pattern pattern = Pattern.compile("^[a-zA-Z0-9@_.]+$");
+            Matcher matcher = pattern.matcher(email);
+            if(email.length() <= 255){
+
             }
             // adicionar cognito if = then cool :D
         } while (inputs.get(0).isEmpty() || inputs.get(1).isEmpty());
     }
 
-    public static String getSHA256Hash(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(input.getBytes("UTF-8"));
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    }
 }
