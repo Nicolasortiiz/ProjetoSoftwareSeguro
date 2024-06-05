@@ -40,17 +40,16 @@ public class VaquinhaDAO {
     }
     public ArrayList<Vaquinha> listarVaquinhas() {
         ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
-        Vaquinha vaquinha = new Vaquinha(null,null,0);
-        Usuario usuario = new Usuario(null,null);
 
         try {
             query = "SELECT id,nome_vaquinha,data_criacao,usuario_id FROM vaquinha";
             ps = conexao.getConexao().prepareStatement(query);
             rs = ps.executeQuery();
+
             while (rs.next()) {
+                Vaquinha vaquinha = new Vaquinha(rs.getString("nome_vaquinha"),null,0);
                 vaquinha.setIdUsuario(rs.getInt("usuario_id"));
                 vaquinha.setIdVaquinha(rs.getInt("id"));
-                vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
                 vaquinha.setData(rs.getString("data_criacao"));
                 vaquinhas.add(vaquinha);
             }
@@ -63,7 +62,6 @@ public class VaquinhaDAO {
     }
     public Vaquinha listarDetalhesVaquinhas(int idVaquinha) {
         Vaquinha vaquinha = new Vaquinha(null,null,0);
-        Usuario usuario = new Usuario(null,null);
 
         try {
             query = "SELECT id,nome_vaquinha,descricao,valor_meta,valor_arrecadado,data_criacao,usuario_id FROM vaquinha WHERE vaquinha.id = ?";

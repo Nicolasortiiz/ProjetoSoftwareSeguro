@@ -10,7 +10,7 @@ public class ListaVaquinhasView {
     }
 
     public void listar(int id,String nomeVaquinha, String nomeUsuario, String dataCriacao){
-        System.out.println("("+id+") "+nomeUsuario+" - "+nomeVaquinha+" - "+dataCriacao);
+        System.out.println("\n(ID:"+id+") Usuario:"+nomeUsuario+" - Nome da Vaquinha:"+nomeVaquinha+" - Data:"+dataCriacao+"\n");
     }
 
     public int acessarVaquinha(){

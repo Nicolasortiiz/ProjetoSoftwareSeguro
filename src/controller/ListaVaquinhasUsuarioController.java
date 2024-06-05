@@ -25,7 +25,7 @@ public class ListaVaquinhasUsuarioController {
             for(int i = 0; i < vaquinhas.size();i++){
                 if((this.opcao-1) == vaquinhas.get(i).getIdVaquinha()) {
                     vaquinhas.clear();
-                    this.dvc = new DetalhesVaquinhaController(usuario, (this.opcao - 1));
+                    this.dvc = new DetalhesVaquinhaController(this.opcao);
                 }
             }
             this.lvuv.opcaoInvalida();

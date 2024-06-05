@@ -2,7 +2,6 @@ package controller;
 
 import dao.UsuarioDAO;
 import dao.VaquinhaDAO;
-import model.Usuario;
 import model.Vaquinha;
 import view.DetalhesVaquinhaView;
 
@@ -13,9 +12,11 @@ public class DetalhesVaquinhaController {
     private int opcao;
     private PagamentoController pc;
 
-    public DetalhesVaquinhaController(Usuario usuario, int idVaquinha){
+    public DetalhesVaquinhaController(int idVaquinha){
         this.dvv = new DetalhesVaquinhaView();
         this.vDAO = new VaquinhaDAO();
+        this.uDAO = new UsuarioDAO();
+        this.opcao = 0;
         Vaquinha vaquinha = vDAO.listarDetalhesVaquinhas(idVaquinha);
         this.dvv.detalhesVaquinha(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(),
                 this.uDAO.retornaNomeUsuario(vaquinha.getIdUsuario()), vaquinha.getDescricao(),

@@ -30,7 +30,7 @@ public class MenuController {
             while(this.usuario != null) {
                 this.opcao = mv.menuLogado();
                 if (this.opcao == 1) {
-                    lvc = new ListaVaquinhasController(this.usuario);
+                    lvc = new ListaVaquinhasController();
                 } else if (this.opcao == 2) {
                     lvuc = new ListaVaquinhasUsuarioController(this.usuario);
                 } else if (this.opcao == 3) {
