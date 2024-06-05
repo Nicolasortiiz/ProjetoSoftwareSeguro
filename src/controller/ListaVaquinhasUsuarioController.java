@@ -18,6 +18,7 @@ public class ListaVaquinhasUsuarioController {
         this.vDAO = new VaquinhaDAO();
         this.opcao = 1;
         ArrayList<Vaquinha> vaquinhas = vDAO.listarVaquinhasUsuario(usuario);
+
         for (Vaquinha vaquinha : vaquinhas) {
             this.lvuv.listar(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(), vaquinha.getData());
         }
@@ -25,7 +26,7 @@ public class ListaVaquinhasUsuarioController {
             if(!vaquinhas.isEmpty()) {
                 this.opcao = this.lvuv.acessarVaquinha();
                 for(int i = 0; i < vaquinhas.size();i++){
-                    if((this.opcao-1) == vaquinhas.get(i).getIdVaquinha()) {
+                    if(this.opcao == vaquinhas.get(i).getIdVaquinha()) {
                         vaquinhas.clear();
                         this.dvc = new DetalhesVaquinhaController(this.opcao);
                     }
