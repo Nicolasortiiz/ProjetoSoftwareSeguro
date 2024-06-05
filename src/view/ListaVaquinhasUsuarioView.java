@@ -8,7 +8,7 @@ public class ListaVaquinhasUsuarioView {
         this.sc = new Scanner (System.in);
     }
     public void listar(int id,String nomeVaquinha, String dataCriacao){
-        System.out.println("("+id+") "+nomeVaquinha+" - "+dataCriacao);
+        System.out.println("\n(ID:"+id+") Nome da Vaquinha:"+nomeVaquinha+" - Data:"+dataCriacao);
     }
     public int acessarVaquinha(){
         this.sc = new Scanner(System.in);
