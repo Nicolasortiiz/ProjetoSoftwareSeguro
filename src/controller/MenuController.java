@@ -4,39 +4,31 @@ import model.Usuario;
 import view.MenuView;
 
 public class MenuController {
-    private MenuView mv;
-    private ListaVaquinhasController lvc;
-    private ListaVaquinhasUsuarioController lvuc;
-    private CriarVaquinhaController cvc;
-    private LoginController lc;
-    private CadastroController cc;
-    private int opcao;
-    private Usuario usuario;
 
     public MenuController(){
-        mv = new MenuView();
-        this.usuario = null;
-        this.opcao = 0;
-        while(this.opcao != 9){
-            this.opcao = mv.menu();
-            if(this.opcao == 1){
-                lc = new LoginController();
-                this.usuario = lc.logar();
-            }else if(this.opcao == 2){
-                cc = new CadastroController();
+        MenuView mv = new MenuView();
+        Usuario usuario = null;
+        int opcao = 0;
+        while(opcao != 9){
+            opcao = mv.menu();
+            if(opcao == 1){
+                LoginController lc = new LoginController();
+                usuario = lc.logar();
+            }else if(opcao == 2){
+                new CadastroController();
             }else{
                 mv.opcaoInvalida();
             }
-            while(this.usuario != null) {
-                this.opcao = mv.menuLogado(this.usuario.getNomeUsuario());
-                if (this.opcao == 1) {
-                    lvc = new ListaVaquinhasController();
-                } else if (this.opcao == 2) {
-                    lvuc = new ListaVaquinhasUsuarioController(this.usuario);
-                } else if (this.opcao == 3) {
-                    cvc = new CriarVaquinhaController(this.usuario);
-                } else if (this.opcao == 4 || this.opcao == 9) {
-                    this.usuario = null;
+            while(usuario != null) {
+                opcao = mv.menuLogado(usuario.getNomeUsuario());
+                if (opcao == 1) {
+                    new ListaVaquinhasController();
+                } else if (opcao == 2) {
+                    new ListaVaquinhasUsuarioController(usuario);
+                } else if (opcao == 3) {
+                    new CriarVaquinhaController(usuario);
+                } else if (opcao == 4 || opcao == 9) {
+                    usuario = null;
                 }else {
                     mv.opcaoInvalida();
                 }

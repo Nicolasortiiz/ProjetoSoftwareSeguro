@@ -15,22 +15,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginController {
-    private LoginView lv;
     private Usuario usuario;
-    private UsuarioDAO uDAO;
-    private ArrayList<String> inputs;
 
     public LoginController() {
-        this.lv = new LoginView();
+        LoginView lv = new LoginView();
         String CLIENT_ID = "5vinuvibjslrtqseo7bad6qeu5";
         String email;
         String senha;
         int status = 0;
 
         do {
-            this.inputs = this.lv.loginInput();
-            email = this.inputs.get(0);
-            senha = this.inputs.get(1);
+            ArrayList<String> inputs = lv.loginInput();
+            email = inputs.get(0);
+            senha = inputs.get(1);
 
             email = Normalizer.normalize(email, Normalizer.Form.NFKC);
             email = email.trim();
@@ -52,17 +49,17 @@ public class LoginController {
                     AuthenticationResultType authResult = authResponse.getAuthenticationResult();
 
                     if (authResult != null) {
-                        this.uDAO = new UsuarioDAO();
+                        UsuarioDAO uDAO = new UsuarioDAO();
                         this.usuario = uDAO.retornaUsuario(email);
                         status = 1;
                     } else {
-                        this.lv.entradaInvalida();
+                        lv.entradaInvalida();
                     }
-                } catch (NotAuthorizedException e) {
+                } catch (NotAuthorizedException | UserNotFoundException e) {
                     lv.entradaInvalida();
                 }
             } else {
-                this.lv.entradaInvalida();
+                lv.entradaInvalida();
             }
         } while ((!email.isBlank() || !senha.isBlank()) && status == 0);
     }

@@ -1,7 +1,7 @@
 package dao;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,20 +9,20 @@ import java.util.Arrays;
 
 public class Conexao {
     private static Conexao conex;
-    private final String con_banco;
     private Connection conn;
     private Conexao() {
         conex = null;
-        con_banco = "jdbc:mysql://127.0.0.1:3306/projetobd?useSSL=false";
+        String con_banco = "jdbc:mysql://127.0.0.1:3306/projetobd?useSSL=false";
         char[] usuario = new char[4];
         char[] senha = new char[4];
         BufferedReader br = null;
         try {
             try {
-                br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt"), Charset.forName("UTF8")));
+                br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt"), StandardCharsets.UTF_8));
                 int numLinha = 0;
                 String line;
-                StringBuilder content = new StringBuilder();
+                StringBuilder content;
+                content = new StringBuilder();
                 while ((line = br.readLine()) != null) {
                     content.append(line);
 
@@ -54,22 +54,21 @@ public class Conexao {
 
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = (Connection) DriverManager.getConnection(con_banco, new String(usuario), new String(senha));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    conn = DriverManager.getConnection(con_banco, new String(usuario), new String(senha));
+                } catch (SQLException | ClassNotFoundException e) {
+                    System.out.println("Ocorreu um erro na conexão com o banco de dados.");
                 }
 
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                System.out.println("Não foi possível ler os arquivos necessários.");
             } finally {
                 Arrays.fill(usuario, (char) 0);
                 Arrays.fill(senha, (char) 0);
+                assert br != null;
                 br.close();
             }
         }catch(IOException e){
-            e.printStackTrace();
+            System.out.println("Houve um erro na entrada e saída da execução.");
         }
 
     }

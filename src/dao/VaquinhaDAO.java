@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class VaquinhaDAO {
-    private Conexao conexao;
+    private final Conexao conexao;
     private String query;
     private PreparedStatement ps;
     private ResultSet rs;
     public VaquinhaDAO(){
-        conexao = conexao.getInstance();
+        conexao = Conexao.getInstance();
     }
     public ArrayList<Vaquinha> listarVaquinhasUsuario(Usuario usuario) {
         ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
@@ -33,7 +33,7 @@ public class VaquinhaDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
         return vaquinhas;
     }
@@ -55,7 +55,7 @@ public class VaquinhaDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
         return vaquinhas;
     }
@@ -77,19 +77,19 @@ public class VaquinhaDAO {
                     vaquinha.setValorMeta(Float.parseFloat(rs.getString("valor_meta")));
                     vaquinha.setValorArrecadado(Float.parseFloat(rs.getString("valor_arrecadado")));
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    System.out.println("Houve um erro na conversão dos valores.");
                 }
 
             }
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
         return vaquinha;
     }
     public void adicionarPagamento(Vaquinha vaquinha, float valor) {
-        float valorArrecadado = 0;
+        float valorArrecadado;
         try {
             query = "SELECT valor_arrecadado FROM vaquinha WHERE id = ?";
             ps = conexao.getConexao().prepareStatement(query);
@@ -109,9 +109,9 @@ public class VaquinhaDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }catch (NumberFormatException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na formatação dos dados.");
         }
     }
 
@@ -129,7 +129,7 @@ public class VaquinhaDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
     }
 

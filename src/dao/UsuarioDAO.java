@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UsuarioDAO {
-    private Conexao conexao;
+    private final Conexao conexao;
     private String query;
     private PreparedStatement ps;
     private ResultSet rs;
     public UsuarioDAO(){
-        conexao = conexao.getInstance();
+        conexao = Conexao.getInstance();
     }
     public Usuario retornaUsuario(String emailLogin) {
         String email = null;
@@ -28,7 +28,7 @@ public class UsuarioDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
         return new Usuario(email, nomeUsuario);
     }
@@ -45,7 +45,7 @@ public class UsuarioDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
         return id;
     }
@@ -60,7 +60,7 @@ public class UsuarioDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
     }
     public String retornaNomeUsuario(int id){
@@ -76,7 +76,7 @@ public class UsuarioDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Houve um erro na conexão com o banco de dados.");
         }
         return nome;
     }

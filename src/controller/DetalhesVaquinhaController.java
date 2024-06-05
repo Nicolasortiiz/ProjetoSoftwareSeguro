@@ -6,26 +6,21 @@ import model.Vaquinha;
 import view.DetalhesVaquinhaView;
 
 public class DetalhesVaquinhaController {
-    private DetalhesVaquinhaView dvv;
-    private VaquinhaDAO vDAO;
-    private UsuarioDAO uDAO;
-    private int opcao;
-    private PagamentoController pc;
 
     public DetalhesVaquinhaController(int idVaquinha){
-        this.dvv = new DetalhesVaquinhaView();
-        this.vDAO = new VaquinhaDAO();
-        this.uDAO = new UsuarioDAO();
-        this.opcao = 0;
+        DetalhesVaquinhaView dvv = new DetalhesVaquinhaView();
+        VaquinhaDAO vDAO = new VaquinhaDAO();
+        UsuarioDAO uDAO = new UsuarioDAO();
+        int opcao = 0;
         Vaquinha vaquinha = vDAO.listarDetalhesVaquinhas(idVaquinha);
-        this.dvv.detalhesVaquinha(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(),
-                this.uDAO.retornaNomeUsuario(vaquinha.getIdUsuario()), vaquinha.getDescricao(),
+        dvv.detalhesVaquinha(vaquinha.getIdVaquinha(), vaquinha.getNomeVaquinha(),
+                uDAO.retornaNomeUsuario(vaquinha.getIdUsuario()), vaquinha.getDescricao(),
                 vaquinha.getData(), vaquinha.getValorArrecadado(), vaquinha.getValorMeta());
 
-        while(this.opcao != 9){
-            this.opcao = this.dvv.opcaoDetalhes();
-            if(this.opcao == 1){
-                this.pc = new PagamentoController(vaquinha);
+        while(opcao != 9){
+            opcao = dvv.opcaoDetalhes();
+            if(opcao == 1){
+                new PagamentoController(vaquinha);
             }else{
                 dvv.opcaoInvalida();
             }

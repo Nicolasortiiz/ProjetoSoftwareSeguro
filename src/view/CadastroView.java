@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CadastroView {
-    private Scanner sc;
+    private final Scanner sc;
     public CadastroView() {
         this.sc = new Scanner (System.in);
     }
