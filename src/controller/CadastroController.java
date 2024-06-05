@@ -5,11 +5,13 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
 import com.amazonaws.services.cognitoidp.model.SignUpRequest;
 import com.amazonaws.services.cognitoidp.model.SignUpResult;
+import com.amazonaws.services.cognitoidp.model.UsernameExistsException;
 import dao.UsuarioDAO;
 import model.Usuario;
 import view.CadastroView;
 
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidParameterException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
@@ -51,15 +53,23 @@ public class CadastroController {
                         .withClientId(CLIENT_ID)
                         .withUsername(email)
                         .withPassword(senha);
-                SignUpResult result = cognitoClient.signUp(signUpRequest);
-                System.out.println("User registration successful. Status: " + result.getUserConfirmed());
-                if (result.getUserConfirmed()) {
+
+
+                try {
+                    SignUpResult result = cognitoClient.signUp(signUpRequest);
+
                     status = 1;
-                    this.usuario = new Usuario(email,nomeUsuario);
+                    this.usuario = new Usuario(email, nomeUsuario);
                     this.uDAO.criarUsuario(usuario);
-                } else {
+
+                } catch (UsernameExistsException e) {
                     cv.entradaInvalida();
+
+                } catch (InvalidParameterException e) {
+                    cv.entradaInvalida();
+
                 }
+
             }else {
                 cv.entradaInvalida();
             }

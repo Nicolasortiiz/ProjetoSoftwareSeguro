@@ -2,11 +2,8 @@ package controller;
 
 import dao.UsuarioDAO;
 import dao.VaquinhaDAO;
-
 import model.Vaquinha;
-
 import view.ListaVaquinhasView;
-
 import java.util.ArrayList;
 
 

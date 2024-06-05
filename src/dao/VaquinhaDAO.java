@@ -2,7 +2,6 @@ package dao;
 
 import model.Usuario;
 import model.Vaquinha;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -97,21 +96,21 @@ public class VaquinhaDAO {
             ps.setInt(1, vaquinha.getIdVaquinha());
             rs = ps.executeQuery();
             if (rs.next()) {
-                try {
-                    valorArrecadado = Float.parseFloat(rs.getString("valor_arrecadado")) + valor;
 
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-                query = "UPDATE valor_arrecadado FROM vaquinha  SET valor_arrecadado = ? WHERE id = ?";
+                valorArrecadado = Float.parseFloat(rs.getString("valor_arrecadado")) + valor;
+
+
+                query = "UPDATE vaquinha  SET valor_arrecadado = ? WHERE id = ?";
                 ps = conexao.getConexao().prepareStatement(query);
                 ps.setString(1, Float.toString(valorArrecadado));
                 ps.setInt(2, vaquinha.getIdVaquinha());
-                rs = ps.executeQuery();
+                ps.executeUpdate();
             }
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }

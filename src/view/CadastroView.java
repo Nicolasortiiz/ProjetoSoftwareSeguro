@@ -22,6 +22,6 @@ public class CadastroView {
     }
 
     public void entradaInvalida(){
-        System.out.println("Eroo no cadastro!");
+        System.out.println("Erro no cadastro!");
     }
 }

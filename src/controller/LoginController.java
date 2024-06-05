@@ -3,10 +3,7 @@ package controller;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
-import com.amazonaws.services.cognitoidp.model.AuthFlowType;
-import com.amazonaws.services.cognitoidp.model.AuthenticationResultType;
-import com.amazonaws.services.cognitoidp.model.InitiateAuthRequest;
-import com.amazonaws.services.cognitoidp.model.InitiateAuthResult;
+import com.amazonaws.services.cognitoidp.model.*;
 import dao.UsuarioDAO;
 import model.Usuario;
 import view.LoginView;
@@ -50,14 +47,19 @@ public class LoginController {
                         .withAuthFlow(AuthFlowType.USER_PASSWORD_AUTH)
                         .withAuthParameters(authParams)
                         .withClientId(CLIENT_ID);
-                InitiateAuthResult authResponse = cognitoClient.initiateAuth(authRequest);
-                AuthenticationResultType authResult = authResponse.getAuthenticationResult();
-                if (authResult != null) {
-                    this.uDAO = new UsuarioDAO();
-                    this.usuario = uDAO.retornaUsuario(email);
-                    status = 1;
-                } else {
-                    this.lv.entradaInvalida();
+                try {
+                    InitiateAuthResult authResponse = cognitoClient.initiateAuth(authRequest);
+                    AuthenticationResultType authResult = authResponse.getAuthenticationResult();
+
+                    if (authResult != null) {
+                        this.uDAO = new UsuarioDAO();
+                        this.usuario = uDAO.retornaUsuario(email);
+                        status = 1;
+                    } else {
+                        this.lv.entradaInvalida();
+                    }
+                } catch (NotAuthorizedException e) {
+                    lv.entradaInvalida();
                 }
             } else {
                 this.lv.entradaInvalida();

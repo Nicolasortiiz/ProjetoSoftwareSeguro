@@ -1,7 +1,6 @@
 package controller;
 
 import dao.VaquinhaDAO;
-import model.Usuario;
 import model.Vaquinha;
 import view.PagamentoView;
 
