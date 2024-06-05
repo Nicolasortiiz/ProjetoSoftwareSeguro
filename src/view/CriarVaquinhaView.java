@@ -28,5 +28,11 @@ public class CriarVaquinhaView {
 
         return vaquinha;
     }
+    public void vaquinhaAdicionada(){
+        System.out.println("A vaquinha foi adicionada!");
+    }
+    public void falhaAdicionar(){
+        System.out.println("Ocorreu um erro!");
+    }
 
 }

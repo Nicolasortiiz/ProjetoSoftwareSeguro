@@ -6,19 +6,29 @@ import model.Vaquinha;
 import view.CriarVaquinhaView;
 import dao.VaquinhaDAO;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 public class CriarVaquinhaController {
     private CriarVaquinhaView vv;
     private VaquinhaDAO vdao;
     private UsuarioDAO udao;
-    private Usuario usuario;
+    private LocalDate localdate;
+
     public CriarVaquinhaController(Usuario usuario){
         this.vv = new CriarVaquinhaView();
         this.vdao = new VaquinhaDAO();
         this.udao = new UsuarioDAO();
-
         Vaquinha vaquinha = vv.addVaquinha();
+        this.localdate = LocalDate.now(ZoneId.of("America/Sao_Paulo"));
 
-        vaquinha.setIdVaquinha(this.udao.retornaIdUsuario(usuario));
-        vdao.insereVaquinha(vaquinha);
+        if(!vaquinha.getNomeVaquinha().isBlank() && !vaquinha.getDescricao().isBlank()){
+            vaquinha.setIdUsuario(this.udao.retornaIdUsuario(usuario));
+            vaquinha.setData(this.localdate.toString());
+            vdao.insereVaquinha(vaquinha);
+            vv.vaquinhaAdicionada();
+        }else{
+            vv.falhaAdicionar();
+        }
     }
 }
