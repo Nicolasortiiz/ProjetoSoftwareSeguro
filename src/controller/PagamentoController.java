@@ -1,10 +1,19 @@
 package controller;
 
+import dao.VaquinhaDAO;
 import model.Usuario;
 import model.Vaquinha;
+import view.PagamentoView;
 
 public class PagamentoController {
-    public PagamentoController(Usuario usuario, Vaquinha vaquinha){
+    private PagamentoView pv;
+    private VaquinhaDAO vDAO;
+
+    public PagamentoController(Vaquinha vaquinha){
+        pv = new PagamentoView();
+        vDAO = new VaquinhaDAO();
+        float valor = pv.valorPagamento();
+        vDAO.adicionarPagamento(vaquinha, valor);
 
     }
 }

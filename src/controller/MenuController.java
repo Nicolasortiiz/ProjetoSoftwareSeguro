@@ -28,14 +28,14 @@ public class MenuController {
                 mv.opcaoInvalida();
             }
             while(this.usuario != null) {
-                this.opcao = mv.menuLogado();
+                this.opcao = mv.menuLogado(this.usuario.getNomeUsuario());
                 if (this.opcao == 1) {
-                    lvc = new ListaVaquinhasController(this.usuario);
+                    lvc = new ListaVaquinhasController();
                 } else if (this.opcao == 2) {
                     lvuc = new ListaVaquinhasUsuarioController(this.usuario);
                 } else if (this.opcao == 3) {
                     cvc = new CriarVaquinhaController(this.usuario);
-                } else if (this.opcao == 4) {
+                } else if (this.opcao == 4 || this.opcao == 9) {
                     this.usuario = null;
                 }else {
                     mv.opcaoInvalida();

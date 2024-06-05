@@ -13,12 +13,15 @@ public class CadastroView {
         ArrayList<String> lista = new ArrayList<>();
         System.out.println("\nDigite o email: ");
         lista.add(sc.nextLine());
-
+        System.out.println("Digite o nome de usuário: ");
+        lista.add(sc.nextLine());
         System.out.println("Digite a senha: ");
         lista.add(sc.nextLine());
 
         return lista;
     }
 
-
+    public void entradaInvalida(){
+        System.out.println("Eroo no cadastro!");
+    }
 }
