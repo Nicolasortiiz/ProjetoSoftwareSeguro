@@ -16,18 +16,20 @@ public class CadastroController {
     private CadastroView cv;
     private Usuario usuario;
     private UsuarioDAO uDAO;
+    private ArrayList<String> inputs;
 
     public CadastroController() {
         this.cv = new CadastroView();
-        ArrayList<String> inputs;
+        this.uDAO = new UsuarioDAO();
         String email;
         String nomeUsuario;
         String senha;
+        int status = 0;
         do {
-            inputs = this.cv.cadastroInput();
-            email = inputs.get(0);
-            nomeUsuario = inputs.get(1);
-            senha = inputs.get(2);
+            this.inputs = this.cv.cadastroInput();
+            email = this.inputs.get(0);
+            nomeUsuario = this.inputs.get(1);
+            senha = this.inputs.get(2);
             email = Normalizer.normalize(email, Normalizer.Form.NFKC);
             nomeUsuario = Normalizer.normalize(nomeUsuario, Normalizer.Form.NFKC);
             email = email.trim();
@@ -36,13 +38,15 @@ public class CadastroController {
             Matcher matcherEmail = pattern.matcher(email);
             Matcher matcherNome = pattern.matcher(nomeUsuario);
             if(email.length() <= 255 && matcherEmail.matches() && matcherNome.matches()){
-                Usuario usuario = new Usuario(email,nomeUsuario);
+                status = 1;
+                this.usuario = new Usuario(email,nomeUsuario);
                 this.uDAO.criarUsuario(usuario);
+
             }else{
                 cv.entradaInvalida();
             }
             // adicionar cognito if = then cool :D
-        } while (!inputs.get(0).isBlank() || !inputs.get(1).isBlank());
+        } while ((!inputs.get(0).isBlank() || !inputs.get(1).isBlank()) && status == 0);
     }
 
 }
