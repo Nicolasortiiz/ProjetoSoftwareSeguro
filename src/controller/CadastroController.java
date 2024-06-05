@@ -1,5 +1,10 @@
 package controller;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
+import com.amazonaws.services.cognitoidp.model.SignUpRequest;
+import com.amazonaws.services.cognitoidp.model.SignUpResult;
 import dao.UsuarioDAO;
 import model.Usuario;
 import view.CadastroView;
@@ -24,6 +29,7 @@ public class CadastroController {
         String email;
         String nomeUsuario;
         String senha;
+        String CLIENT_ID = "5vinuvibjslrtqseo7bad6qeu5";
         int status = 0;
         do {
             this.inputs = this.cv.cadastroInput();
@@ -38,14 +44,25 @@ public class CadastroController {
             Matcher matcherEmail = pattern.matcher(email);
             Matcher matcherNome = pattern.matcher(nomeUsuario);
             if(email.length() <= 255 && matcherEmail.matches() && matcherNome.matches()){
-                status = 1;
-                this.usuario = new Usuario(email,nomeUsuario);
-                this.uDAO.criarUsuario(usuario);
-
-            }else{
+                AWSCognitoIdentityProvider cognitoClient = AWSCognitoIdentityProviderClientBuilder.standard()
+                        .withRegion(Regions.US_EAST_1)
+                        .build();
+                SignUpRequest signUpRequest = new SignUpRequest()
+                        .withClientId(CLIENT_ID)
+                        .withUsername(email)
+                        .withPassword(senha);
+                SignUpResult result = cognitoClient.signUp(signUpRequest);
+                System.out.println("User registration successful. Status: " + result.getUserConfirmed());
+                if (result.getUserConfirmed()) {
+                    status = 1;
+                    this.usuario = new Usuario(email,nomeUsuario);
+                    this.uDAO.criarUsuario(usuario);
+                } else {
+                    cv.entradaInvalida();
+                }
+            }else {
                 cv.entradaInvalida();
             }
-            // adicionar cognito if = then cool :D
         } while ((!inputs.get(0).isBlank() || !inputs.get(1).isBlank()) && status == 0);
     }
 
