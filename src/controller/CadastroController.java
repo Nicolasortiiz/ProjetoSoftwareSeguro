@@ -1,5 +1,11 @@
 package controller;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
+import com.amazonaws.services.cognitoidp.model.SignUpRequest;
+import com.amazonaws.services.cognitoidp.model.SignUpResult;
+import dao.UsuarioDAO;
 import model.Usuario;
 import view.CadastroView;
 
@@ -14,32 +20,50 @@ import java.util.regex.Pattern;
 public class CadastroController {
     private CadastroView cv;
     private Usuario usuario;
+    private UsuarioDAO uDAO;
+    private ArrayList<String> inputs;
 
     public CadastroController() {
         this.cv = new CadastroView();
-        ArrayList<String> inputs;
+        this.uDAO = new UsuarioDAO();
+        String email;
+        String nomeUsuario;
+        String senha;
+        String CLIENT_ID = "5vinuvibjslrtqseo7bad6qeu5";
+        int status = 0;
         do {
-            inputs = this.cv.cadastroInput();
-            String email = inputs.get(0);
-            String senha = "";
-            try {
-                senha = getSHA256Hash(inputs.get(1));
-            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                System.err.println("Erro: " + e.getMessage());
+            this.inputs = this.cv.cadastroInput();
+            email = this.inputs.get(0);
+            nomeUsuario = this.inputs.get(1);
+            senha = this.inputs.get(2);
+            email = Normalizer.normalize(email, Normalizer.Form.NFKC);
+            nomeUsuario = Normalizer.normalize(nomeUsuario, Normalizer.Form.NFKC);
+            email = email.trim();
+            nomeUsuario = nomeUsuario.trim();
+            Pattern pattern = Pattern.compile("^[a-zA-Z0-9@_.]+$");
+            Matcher matcherEmail = pattern.matcher(email);
+            Matcher matcherNome = pattern.matcher(nomeUsuario);
+            if(email.length() <= 255 && matcherEmail.matches() && matcherNome.matches()){
+                AWSCognitoIdentityProvider cognitoClient = AWSCognitoIdentityProviderClientBuilder.standard()
+                        .withRegion(Regions.US_EAST_1)
+                        .build();
+                SignUpRequest signUpRequest = new SignUpRequest()
+                        .withClientId(CLIENT_ID)
+                        .withUsername(email)
+                        .withPassword(senha);
+                SignUpResult result = cognitoClient.signUp(signUpRequest);
+                System.out.println("User registration successful. Status: " + result.getUserConfirmed());
+                if (result.getUserConfirmed()) {
+                    status = 1;
+                    this.usuario = new Usuario(email,nomeUsuario);
+                    this.uDAO.criarUsuario(usuario);
+                } else {
+                    cv.entradaInvalida();
+                }
+            }else {
+                cv.entradaInvalida();
             }
-            // adicionar cognito if = then cool :D
-        } while (inputs.get(0).isEmpty() || inputs.get(1).isEmpty());
+        } while ((!inputs.get(0).isBlank() || !inputs.get(1).isBlank()) && status == 0);
     }
 
-    public static String getSHA256Hash(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(input.getBytes("UTF-8"));
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    }
 }

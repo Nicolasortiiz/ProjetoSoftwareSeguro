@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class LoginView {
     private Scanner sc;
+
     public LoginView(){
         this.sc = new Scanner (System.in);
     }
@@ -21,6 +22,7 @@ public class LoginView {
 
         return lista;
     }
+
     public void entradaInvalida(){
         System.out.println("Login incorreto!");
     }
