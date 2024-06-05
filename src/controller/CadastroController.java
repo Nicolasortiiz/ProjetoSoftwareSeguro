@@ -62,10 +62,7 @@ public class CadastroController {
                     this.usuario = new Usuario(email, nomeUsuario);
                     this.uDAO.criarUsuario(usuario);
 
-                } catch (UsernameExistsException e) {
-                    cv.entradaInvalida();
-
-                } catch (InvalidParameterException e) {
+                } catch (UsernameExistsException | com.amazonaws.services.cognitoidp.model.InvalidParameterException e) {
                     cv.entradaInvalida();
 
                 }

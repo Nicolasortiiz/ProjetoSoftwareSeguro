@@ -15,10 +15,9 @@ public class Conexao {
         String con_banco = "jdbc:mysql://127.0.0.1:3306/projetobd?useSSL=false";
         char[] usuario = new char[4];
         char[] senha = new char[4];
-        BufferedReader br = null;
+
         try {
-            try {
-                br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt"), StandardCharsets.UTF_8));
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("src/arquivos/poema.txt"), StandardCharsets.UTF_8))){
                 int numLinha = 0;
                 String line;
                 StringBuilder content;
