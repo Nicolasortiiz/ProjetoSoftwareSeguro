@@ -91,5 +91,31 @@ public class VaquinhaDAO {
         }
         return vaquinha;
     }
+    public void adicionarPagamento(Vaquinha vaquinha, float valor) {
+        float valorArrecadado = 0;
+        try {
+            query = "SELECT valor_arrecadado FROM vaquinha WHERE id = ?";
+            ps = conexao.getConexao().prepareStatement(query);
+            ps.setInt(1, vaquinha.getIdVaquinha());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                try {
+                    valorArrecadado = Float.parseFloat(rs.getString("valor_arrecadado")) + valor;
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                query = "UPDATE valor_arrecadado FROM vaquinha  SET valor_arrecadado = ? WHERE id = ?";
+                ps = conexao.getConexao().prepareStatement(query);
+                ps.setString(1, Float.toString(valorArrecadado));
+                ps.setInt(2, vaquinha.getIdVaquinha());
+                rs = ps.executeQuery();
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -24,7 +24,7 @@ public class DetalhesVaquinhaController {
         while(this.opcao != 9){
             this.opcao = this.dvv.opcaoDetalhes();
             if(this.opcao == 1){
-                this.pc = new PagamentoController(usuario,vaquinha);
+                this.pc = new PagamentoController(vaquinha);
             }else{
                 dvv.opcaoInvalida();
             }
