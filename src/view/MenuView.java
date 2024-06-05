@@ -18,8 +18,9 @@ public class MenuView {
         return sc.nextInt();
     }
 
-    public int menuLogado(){
+    public int menuLogado(String nome){
         this.sc = new Scanner(System.in);
+        System.out.println("\nLogado como "+nome);
         System.out.println("(1) Lista de vaquinhas disponíveis");
         System.out.println("(2) Minhas vaquinhas");
         System.out.println("(3) Criar nova vaquinha");
