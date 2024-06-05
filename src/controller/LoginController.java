@@ -1,10 +1,19 @@
 package controller;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
+import com.amazonaws.services.cognitoidp.model.AuthFlowType;
+import com.amazonaws.services.cognitoidp.model.AuthenticationResultType;
+import com.amazonaws.services.cognitoidp.model.InitiateAuthRequest;
+import com.amazonaws.services.cognitoidp.model.InitiateAuthResult;
 import dao.UsuarioDAO;
 import model.Usuario;
 import view.LoginView;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +25,7 @@ public class LoginController {
 
     public LoginController() {
         this.lv = new LoginView();
+        String CLIENT_ID = "5vinuvibjslrtqseo7bad6qeu5";
         String email;
         String senha;
         int status = 0;
@@ -30,9 +40,25 @@ public class LoginController {
             Pattern pattern = Pattern.compile("^[a-zA-Z0-9@_.]+$");
             Matcher matcher = pattern.matcher(email);
             if (email.length() <= 255 && matcher.matches() && !senha.isBlank()) {
-                this.uDAO = new UsuarioDAO();
-                this.usuario = uDAO.retornaUsuario(email);
-                status = 1;
+                AWSCognitoIdentityProvider cognitoClient = AWSCognitoIdentityProviderClientBuilder.standard()
+                        .withRegion(Regions.US_EAST_1)
+                        .build();
+                Map<String, String> authParams = new HashMap<>();
+                authParams.put("USERNAME", email);
+                authParams.put("PASSWORD", senha);
+                InitiateAuthRequest authRequest = new InitiateAuthRequest()
+                        .withAuthFlow(AuthFlowType.USER_PASSWORD_AUTH)
+                        .withAuthParameters(authParams)
+                        .withClientId(CLIENT_ID);
+                InitiateAuthResult authResponse = cognitoClient.initiateAuth(authRequest);
+                AuthenticationResultType authResult = authResponse.getAuthenticationResult();
+                if (authResult != null) {
+                    this.uDAO = new UsuarioDAO();
+                    this.usuario = uDAO.retornaUsuario(email);
+                    status = 1;
+                } else {
+                    this.lv.entradaInvalida();
+                }
             } else {
                 this.lv.entradaInvalida();
             }
