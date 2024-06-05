@@ -108,4 +108,20 @@ public class VaquinhaDAO {
         }
         return nome;
     }
+
+    public void insereVaquinha(Vaquinha vaquinha){
+        String query = "INSERT INTO vaquinha (nome_vaquinha, descricao, valor_meta, valor_arrecadado, data_criacao) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = conexao.getConexao().prepareStatement(query)) {
+            ps.setString(1, vaquinha.getNomeVaquinha());
+            ps.setString(2, vaquinha.getDescricao());
+            ps.setFloat(3, vaquinha.getValorMeta());
+            ps.setFloat(4, vaquinha.getValorArrecadado());
+            ps.setString(5, vaquinha.getData());
+            //Tem que colocar o usuário aqui ainda;
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -34,5 +34,23 @@ public class UsuarioDAO {
         }
         return new Usuario(email, nomeUsuario);
     }
+    public int retornaIdUsuario(Usuario usuario){
+        int id = 0;
+        try {
+            query = "SELECT id FROM usuario WHERE email = ?";
+            ps = conexao.getConexao().prepareStatement(query);
+            ps.setString(1, usuario.getEmail());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
 
 }
