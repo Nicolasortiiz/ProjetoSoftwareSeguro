@@ -12,16 +12,18 @@ public class LoginController {
     private LoginView lv;
     private Usuario usuario;
     private UsuarioDAO uDAO;
+    private ArrayList<String> inputs;
 
     public LoginController() {
         this.lv = new LoginView();
         String email;
         String senha;
-        ArrayList<String> inputs;
+        int status = 0;
+
         do {
-            inputs = this.lv.loginInput();
-            email = inputs.get(0);
-            senha = inputs.get(1);
+            this.inputs = this.lv.loginInput();
+            email = this.inputs.get(0);
+            senha = this.inputs.get(1);
 
             email = Normalizer.normalize(email, Normalizer.Form.NFKC);
             email = email.trim();
@@ -30,10 +32,11 @@ public class LoginController {
             if (email.length() <= 255 && matcher.matches() && !senha.isBlank()) {
                 this.uDAO = new UsuarioDAO();
                 this.usuario = uDAO.retornaUsuario(email);
+                status = 1;
             } else {
                 this.lv.entradaInvalida();
             }
-        } while (!email.isBlank() || !senha.isBlank());
+        } while ((!email.isBlank() || !senha.isBlank()) && status == 0);
     }
     public Usuario logar(){
         return this.usuario;
