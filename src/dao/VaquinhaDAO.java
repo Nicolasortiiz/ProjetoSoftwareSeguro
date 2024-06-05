@@ -18,7 +18,7 @@ public class VaquinhaDAO {
     }
     public ArrayList<Vaquinha> listarVaquinhasUsuario(Usuario usuario) {
         ArrayList<Vaquinha> vaquinhas = new ArrayList<>();
-        Vaquinha vaquinha = new Vaquinha(null,null,0);
+
 
         try {
             query = "SELECT id,nome_vaquinha,data_criacao FROM vaquinha WHERE usuario_id = (SELECT id FROM usuario WHERE email = ?)";
@@ -26,8 +26,8 @@ public class VaquinhaDAO {
             ps.setString(1, usuario.getEmail());
             rs = ps.executeQuery();
             while (rs.next()) {
+                Vaquinha vaquinha = new Vaquinha(rs.getString("nome_vaquinha"),null,0);
                 vaquinha.setIdVaquinha(rs.getInt("id"));
-                vaquinha.setNomeVaquinha(rs.getString("nome_vaquinha"));
                 vaquinha.setData(rs.getString("data_criacao"));
                 vaquinhas.add(vaquinha);
             }
